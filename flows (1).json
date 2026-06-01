@@ -1,0 +1,375 @@
+[
+    {
+        "id": "9b83eff9c35105d9",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1e7651a2dce2de83",
+        "type": "function",
+        "z": "9b83eff9c35105d9",
+        "name": "แยก Data & เช็คสถานะ",
+        "func": "let p = msg.payload;\n\n// ฟังก์ชันเช็คเงื่อนไขตามโค้ด Arduino: (current < 0 || pf < 0.7)\nfunction checkStatus(i, pf) {\n    if (i < 0 || pf < 0.7) {\n        return \"❌ ผิดปกติ (ตรวจสอบ CT)\";\n    }\n    return \"✅ ปกติ\";\n}\n\nreturn [\n    { payload: p.L1_I }, { payload: p.L1_PF }, { payload: checkStatus(p.L1_I, p.L1_PF) },\n    { payload: p.L2_I }, { payload: p.L2_PF }, { payload: checkStatus(p.L2_I, p.L2_PF) },\n    { payload: p.L3_I }, { payload: p.L3_PF }, { payload: checkStatus(p.L3_I, p.L3_PF) }\n];",
+        "outputs": 9,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 240,
+        "wires": [
+            [
+                "gauge_l1_i"
+            ],
+            [
+                "gauge_l1_pf"
+            ],
+            [
+                "text_l1_status"
+            ],
+            [
+                "gauge_l2_i"
+            ],
+            [
+                "gauge_l2_pf"
+            ],
+            [
+                "text_l2_status"
+            ],
+            [
+                "gauge_l3_i"
+            ],
+            [
+                "gauge_l3_pf"
+            ],
+            [
+                "text_l3_status"
+            ]
+        ]
+    },
+    {
+        "id": "gauge_l1_i",
+        "type": "ui_gauge",
+        "z": "9b83eff9c35105d9",
+        "name": "",
+        "group": "group_l1",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "L1 Current (A)",
+        "label": "A",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "gauge_l1_pf",
+        "type": "ui_gauge",
+        "z": "9b83eff9c35105d9",
+        "name": "",
+        "group": "group_l1",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "wave",
+        "title": "L1 Power Factor",
+        "label": "PF",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "0.7",
+        "seg2": "0.8",
+        "diff": false,
+        "className": "",
+        "x": 630,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "text_l1_status",
+        "type": "ui_text",
+        "z": "9b83eff9c35105d9",
+        "group": "group_l1",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 610,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "gauge_l2_i",
+        "type": "ui_gauge",
+        "z": "9b83eff9c35105d9",
+        "name": "",
+        "group": "group_l2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "L2 Current (A)",
+        "label": "A",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "gauge_l2_pf",
+        "type": "ui_gauge",
+        "z": "9b83eff9c35105d9",
+        "name": "",
+        "group": "group_l2",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "wave",
+        "title": "L2 Power Factor",
+        "label": "PF",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "0.7",
+        "seg2": "0.8",
+        "diff": false,
+        "className": "",
+        "x": 630,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "text_l2_status",
+        "type": "ui_text",
+        "z": "9b83eff9c35105d9",
+        "group": "group_l2",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 610,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "gauge_l3_i",
+        "type": "ui_gauge",
+        "z": "9b83eff9c35105d9",
+        "name": "",
+        "group": "group_l3",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "L3 Current (A)",
+        "label": "A",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "gauge_l3_pf",
+        "type": "ui_gauge",
+        "z": "9b83eff9c35105d9",
+        "name": "",
+        "group": "group_l3",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "wave",
+        "title": "L3 Power Factor",
+        "label": "PF",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "0.7",
+        "seg2": "0.8",
+        "diff": false,
+        "className": "",
+        "x": 630,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "text_l3_status",
+        "type": "ui_text",
+        "z": "9b83eff9c35105d9",
+        "group": "group_l3",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 610,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "f1607497d4a5502c",
+        "type": "mqtt in",
+        "z": "9b83eff9c35105d9",
+        "name": "รับค่าจาก ESP32",
+        "topic": "tie_smart/ct_checker/device01",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "28955765c0877643",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 80,
+        "y": 240,
+        "wires": [
+            [
+                "1e7651a2dce2de83"
+            ]
+        ]
+    },
+    {
+        "id": "group_l1",
+        "type": "ui_group",
+        "name": "Phase L1",
+        "tab": "tab_ct_checker",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "group_l2",
+        "type": "ui_group",
+        "name": "Phase L2",
+        "tab": "tab_ct_checker",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "group_l3",
+        "type": "ui_group",
+        "name": "Phase L3",
+        "tab": "tab_ct_checker",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "28955765c0877643",
+        "type": "mqtt-broker",
+        "name": "MQTT-Node",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "tab_ct_checker",
+        "type": "ui_tab",
+        "name": "CT Checker Dashboard",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "7a30e32fecb32b23",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
